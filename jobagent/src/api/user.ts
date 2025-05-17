@@ -1,6 +1,7 @@
 import { IInterviewResumeDetail } from '@/types/IInterview';
 import { fetchApi, fetchApiWithFile } from './config';
-import { IUserFile } from '@/types/IUser';
+import { IUser, IUserFile } from '@/types/IUser';
+
 export async function uploadCV(file: File): Promise<IUserFile> {
     const formData = new FormData();
     formData.append('file', file);
@@ -28,3 +29,9 @@ export async function getInterviewHistory(): Promise<IInterviewResumeDetail[]> {
     });
 }
 
+export async function getUser(): Promise<IUser> {
+    return fetchApi<IUser>('/users/me', {
+        method: 'GET',
+        public: false,
+    });
+}

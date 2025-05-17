@@ -1,30 +1,22 @@
-import { AvatarFallback, AvatarImage } from '../ui/avatar';
+import { SignInButton, UserButton } from '@clerk/clerk-react';
 import { ThemeToggle } from '../ThemeToggle';
-import { Avatar } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { useState } from 'react';
-import { LoginMenu } from '../menu/LoginMenu';
-import UserDropdown from './UserDropdown';
 import { useUser } from '@/context/UserContext';
-import UserMenu from '../menu/UserMenu';
 import { useJob } from '@/context/JobContext';
 import { X } from 'lucide-react';
 import InterviewMenu from '../InterviewMenu';
 import { IInterviewResume } from '@/types/IInterview';
 import InterviewResume from '../menu/InterviewResume';
 import InterviewHistory from '../menu/InterviewHistory';
-import { RegisterMenu } from '../menu/RegisterMenu';
+
 export const Navbar = () => {
-    const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
-    const [isRegisterMenuOpen, setIsRegisterMenuOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [isInterviewMenuOpen, setIsInterviewMenuOpen] = useState(false);
     const [interviewResume, setInterviewResume] = useState<IInterviewResume | null>(null);
     const [interviewResumeOpen, setInterviewResumeOpen] = useState(false);
     const [isInterviewHistoryOpen, setIsInterviewHistoryOpen] = useState(false);
 
-    const { isAuthenticated, user, logout } = useUser();
+    const { isAuthenticated } = useUser();
     const { jobSelected, setJobSelected } = useJob();
 
     const interviewResumeShow = (interview: IInterviewResume, open: boolean) => {
@@ -63,51 +55,12 @@ export const Navbar = () => {
 
             <div className="flex items-center gap-2">
                 <ThemeToggle />
-
                 <div className="relative">
                     {isAuthenticated ? (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="rounded-full"
-                        >
-                            <Avatar>
-                                <AvatarImage src="" alt="User" />
-                                <AvatarFallback className="bg-primary text-primary-foreground">
-                                    {user?.name?.charAt(0)}
-                                </AvatarFallback>
-                            </Avatar>
-                        </Button>
+                        <UserButton />
                     ) : (
-                        <Button
-                            variant="outline"
-                            className=""
-                            onClick={() => setIsLoginMenuOpen(true)}
-                        >
-                            Login
-                        </Button>
+                        <SignInButton mode="modal" />
                     )}
-
-                    {isMenuOpen && (
-                        <UserDropdown
-                            setIsMenuOpen={setIsMenuOpen}
-                            logout={logout}
-                            setIsUserMenuOpen={setIsUserMenuOpen}
-                            setIsInterviewHistoryOpen={setIsInterviewHistoryOpen}
-                        />
-                    )}
-                    <UserMenu isOpen={isUserMenuOpen} setIsOpen={setIsUserMenuOpen} />
-                    <LoginMenu
-                        isOpen={isLoginMenuOpen}
-                        setIsOpen={setIsLoginMenuOpen}
-                        openRegister={() => setIsRegisterMenuOpen(true)}
-                    />
-                    <RegisterMenu
-                        isOpen={isRegisterMenuOpen}
-                        setIsOpen={setIsRegisterMenuOpen}
-                        openLogin={() => setIsLoginMenuOpen(true)}
-                    />
                 </div>
             </div>
             <InterviewMenu

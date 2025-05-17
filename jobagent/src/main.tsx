@@ -6,17 +6,29 @@ import { ThemeProvider } from './components/ThemeProvider';
 import { JobProvider } from './context/JobContext.tsx';
 import { UserProvider } from './context/UserContext.tsx';
 import { ErrorProvider } from './context/ErrorContext.tsx';
+import { ClerkProvider } from '@clerk/clerk-react';
+import { dark } from '@clerk/themes';
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+    throw new Error('Missing Publishable Key');
+}
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <ThemeProvider defaultTheme="dark">
-            <ErrorProvider>
-                <UserProvider>
-                    <JobProvider>
-                        <App />
-                    </JobProvider>
-                </UserProvider>
-            </ErrorProvider>
-        </ThemeProvider>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} appearance={{
+            baseTheme: dark,
+        }}>
+            <ThemeProvider defaultTheme="dark">
+                <ErrorProvider>
+                    <UserProvider>
+                        <JobProvider>
+                            <App />
+                        </JobProvider>
+                    </UserProvider>
+                </ErrorProvider>
+            </ThemeProvider>
+        </ClerkProvider>
     </StrictMode>
 );

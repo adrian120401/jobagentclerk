@@ -1,12 +1,15 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { IUser } from '@/types/IUser';
+import { useUser as useClerkUser, useAuth } from '@clerk/clerk-react';
+import { getUser } from '@/api/user';
 
 interface UserContextType {
-    user: IUser | null;
+    user: IUser | null; // Backend user
     setUser: (user: IUser) => void;
-    isAuthenticated: boolean;
-    token: string | null;
-    login: (token: string, user: IUser) => void;
+    isAuthenticated: boolean; // Clerk session
+    token: string | null; // Clerk JWT
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clerkUser: any; // Clerk user object
     logout: () => void;
 }
 
@@ -18,39 +21,41 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<IUser | null>(null);
+    const { user: clerkUser, isSignedIn } = useClerkUser();
+    const { getToken, signOut } = useAuth();
     const [token, setToken] = useState<string | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
-        if (storedToken && storedUser) {
-            setToken(storedToken);
-            setIsAuthenticated(true);
-            setUser(JSON.parse(storedUser));
-        }
-    }, []);
-
-    const login = (newToken: string, newUser: IUser) => {
-        localStorage.setItem('token', newToken);
-        localStorage.setItem('user', JSON.stringify(newUser));
-        setToken(newToken);
-        setUser(newUser);
-        setIsAuthenticated(true);
-    };
+        const fetchUser = async () => {
+            if (isSignedIn && getToken) {
+                const jwt = await getToken();
+                setToken(jwt);
+                try {
+                    const res = await getUser();
+                    setUser(res);
+                } catch {
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+                setToken(null);
+            }
+        };
+        fetchUser();
+    }, [isSignedIn, getToken]);
 
     const logout = () => {
-        localStorage.removeItem('token');
+        signOut();
+        setUser(null);
         setToken(null);
-        setIsAuthenticated(false);
     };
 
     const value = {
         user,
         setUser,
-        isAuthenticated,
+        isAuthenticated: !!isSignedIn,
         token,
-        login,
+        clerkUser,
         logout,
     };
 
@@ -59,10 +64,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
 export const useUser = (): UserContextType => {
     const context = useContext(UserContext);
-
     if (context === undefined) {
         throw new Error('useUser must be used inside a UserProvider');
     }
-
     return context;
 };
