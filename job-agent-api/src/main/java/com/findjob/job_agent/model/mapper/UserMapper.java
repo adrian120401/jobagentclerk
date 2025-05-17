@@ -10,6 +10,6 @@ public class UserMapper {
     }
 
     public static User toEntity(UserRequestDTO userRequestDTO) {
-        return new User(userRequestDTO.getName(), userRequestDTO.getEmail(), userRequestDTO.getPassword());
+        return new User(userRequestDTO.getName(), userRequestDTO.getEmail(), userRequestDTO.getClerkId());
     }
 }

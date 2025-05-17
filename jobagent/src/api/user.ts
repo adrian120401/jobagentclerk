@@ -1,6 +1,6 @@
 import { IInterviewResumeDetail } from '@/types/IInterview';
 import { fetchApi, fetchApiWithFile } from './config';
-import { IUser, IUserFile } from '@/types/IUser';
+import { IUser, IUserFile, IUserRegister } from '@/types/IUser';
 
 export async function uploadCV(file: File): Promise<IUserFile> {
     const formData = new FormData();
@@ -35,3 +35,12 @@ export async function getUser(): Promise<IUser> {
         public: false,
     });
 }
+
+export async function register(user: IUserRegister): Promise<void> {
+    return fetchApi<void>('/users/register', {
+        method: 'POST',
+        public: false,
+        body: JSON.stringify(user),
+    });
+}
+

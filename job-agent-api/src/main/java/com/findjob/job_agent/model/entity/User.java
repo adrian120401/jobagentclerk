@@ -21,16 +21,16 @@ public class User implements UserDetails {
     private String id;
     private String name;
     private String email;
-    private String password;
     private String cv_path;
     private String docx_path;
     private ResumeProfile resumeProfile;
     private String role;
+    private String clerkId;
 
-    public User(String name, String email, String password){
+    public User(String name, String email, String clerkId) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.clerkId = clerkId;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return "";
     }
 
     @Override

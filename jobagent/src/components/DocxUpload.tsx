@@ -21,7 +21,10 @@ const DocxUpload = ({ user, setUser }: DocxUploadProps) => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
-            if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            if (
+                file.type ===
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ) {
                 setDocxFile(file);
                 setUploadStatus('idle');
             } else {
@@ -36,7 +39,10 @@ const DocxUpload = ({ user, setUser }: DocxUploadProps) => {
         setIsDragging(false);
         if (event.dataTransfer.files && event.dataTransfer.files[0]) {
             const file = event.dataTransfer.files[0];
-            if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            if (
+                file.type ===
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ) {
                 setDocxFile(file);
                 setUploadStatus('idle');
             } else {

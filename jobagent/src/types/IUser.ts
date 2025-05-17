@@ -11,6 +11,12 @@ export interface LoginResponse {
     token: string;
 }
 
+export interface IUserRegister {
+    name: string;
+    email: string;
+    clerkId: string;
+}
+
 export interface IUserFile {
     url: string;
 }

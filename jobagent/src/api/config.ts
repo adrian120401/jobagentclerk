@@ -4,6 +4,15 @@ interface FetchOptions extends RequestInit {
     public?: boolean;
 }
 
+export class ErrorResponse extends Error {
+    status: number;
+
+    constructor(message: string, status: number) {
+        super(message);
+        this.status = status;
+    }
+}
+
 export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
     const { public: isPublic, ...fetchOptions } = options;
 
@@ -24,7 +33,10 @@ export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}):
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+        throw new ErrorResponse(
+            errorData.message || `Error ${response.status}: ${response.statusText}`,
+            response.status
+        );
     }
 
     return response.json();

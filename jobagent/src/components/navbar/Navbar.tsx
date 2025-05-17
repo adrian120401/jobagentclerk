@@ -59,7 +59,11 @@ export const Navbar = () => {
                     {isAuthenticated ? (
                         <UserButton />
                     ) : (
-                        <SignInButton mode="modal" />
+                        <SignInButton mode="modal">
+                            <Button variant="outline" className="border border-primary px-4 py-2">
+                                Login
+                            </Button>
+                        </SignInButton>
                     )}
                 </div>
             </div>

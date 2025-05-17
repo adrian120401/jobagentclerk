@@ -1,7 +1,6 @@
 package com.findjob.job_agent.controller;
 
 import com.findjob.job_agent.model.dto.*;
-import com.findjob.job_agent.model.entity.Interview;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +25,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserResponseDTO register(@RequestBody UserRequestDTO userRequestDTO) {
-        return userService.register(userRequestDTO);
-    }
-
-    @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO){
-        return userService.login(loginRequestDTO);
+    public ResponseEntity<Map<String, String>> register(@RequestBody @Validated UserRequestDTO userRequestDTO) {
+        userService.createUser(userRequestDTO);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")

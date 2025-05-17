@@ -1,7 +1,8 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { IUser } from '@/types/IUser';
 import { useUser as useClerkUser, useAuth } from '@clerk/clerk-react';
-import { getUser } from '@/api/user';
+import { getUser, register } from '@/api/user';
+import { ErrorResponse } from '@/api/config';
 
 interface UserContextType {
     user: IUser | null; // Backend user
@@ -29,20 +30,36 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         const fetchUser = async () => {
             if (isSignedIn && getToken) {
                 const jwt = await getToken();
+                if (!jwt) {
+                    setUser(null);
+                    setToken(null);
+                    return;
+                }
+                localStorage.setItem('token', jwt);
                 setToken(jwt);
                 try {
                     const res = await getUser();
                     setUser(res);
-                } catch {
-                    setUser(null);
-                }
+                } catch (err: unknown) {
+                    if (err instanceof ErrorResponse && err.status === 404 && clerkUser) {
+                      await register({
+                        clerkId: clerkUser.id,
+                        email: clerkUser.emailAddresses[0].emailAddress,
+                        name: clerkUser.firstName || '',
+                      });
+                      const res = await getUser();
+                      setUser(res);
+                    } else {
+                      setUser(null);
+                    }
+                  }
             } else {
                 setUser(null);
                 setToken(null);
             }
         };
         fetchUser();
-    }, [isSignedIn, getToken]);
+    }, [isSignedIn, getToken, clerkUser]);
 
     const logout = () => {
         signOut();
