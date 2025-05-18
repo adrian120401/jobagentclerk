@@ -11,7 +11,6 @@ export async function getMessage(request: IJobRequest): Promise<IJobResponse> {
 }
 
 export async function getInterview(history: IInterview[], jobId: string): Promise<IInterview> {
-    console.log(history);
     return fetchApi<IInterview>('/chats/interview', {
         method: 'POST',
         body: JSON.stringify({ history, jobId }),

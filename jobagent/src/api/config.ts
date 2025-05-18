@@ -1,3 +1,5 @@
+import { getTokenFromProvider } from './tokenProvider';
+
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 interface FetchOptions extends RequestInit {
@@ -20,7 +22,7 @@ export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}):
     headers.set('Content-Type', 'application/json');
 
     if (!isPublic) {
-        const token = localStorage.getItem('token');
+        const token = await getTokenFromProvider();
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
@@ -51,13 +53,12 @@ export async function fetchApiWithFile<T>(
     const headers = new Headers(options.headers);
 
     if (!isPublic) {
-        const token = localStorage.getItem('token');
+        const token = await getTokenFromProvider();
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
     }
 
-    console.log(headers);
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...fetchOptions,

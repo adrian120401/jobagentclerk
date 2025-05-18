@@ -3,6 +3,7 @@ import { IUser } from '@/types/IUser';
 import { useUser as useClerkUser, useAuth } from '@clerk/clerk-react';
 import { getUser, register } from '@/api/user';
 import { ErrorResponse } from '@/api/config';
+import { setTokenProvider } from '@/api/tokenProvider';
 
 interface UserContextType {
     user: IUser | null; // Backend user
@@ -60,6 +61,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         };
         fetchUser();
     }, [isSignedIn, getToken, clerkUser]);
+
+    useEffect(() => {
+        setTokenProvider(getToken);
+    }, [getToken]);
 
     const logout = () => {
         signOut();

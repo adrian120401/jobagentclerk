@@ -4,6 +4,22 @@ Job Agent is a modern, AI-driven platform designed to help users find, analyze, 
 
 ---
 
+## Application Highlights
+
+### Job Matching
+![Job Matching](./short1.gif)
+**Intelligent job matching based on user profile and job descriptions.** The agent analyzes user information and available job postings to recommend the most relevant opportunities, ensuring a personalized and effective job search experience.
+
+### Smart Resume Editing
+![Smart Resume Editing](./short2.gif)
+**Automated resume optimization tailored to job requirements.** The agent reviews and edits the user's resume, enhancing it to better align with targeted job positions and increase the chances of success.
+
+### Interview Mode
+![Interview Mode](./short3.gif)
+**Simulated technical interviews with real-time feedback and scoring.** The agent conducts mock interviews, provides instant feedback, assigns a performance score, and saves sessions so users can track their progress and improvement over time.
+
+---
+
 ## Technologies Used
 
 **Frontend:**
