@@ -13,6 +13,7 @@ interface UserContextType {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clerkUser: any; // Clerk user object
     logout: () => void;
+    isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +27,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const { user: clerkUser, isSignedIn } = useClerkUser();
     const { getToken, signOut } = useAuth();
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -38,22 +40,25 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 }
                 localStorage.setItem('token', jwt);
                 setToken(jwt);
+                setIsLoading(true);
                 try {
                     const res = await getUser();
                     setUser(res);
                 } catch (err: unknown) {
                     if (err instanceof ErrorResponse && err.status === 404 && clerkUser) {
-                      await register({
-                        clerkId: clerkUser.id,
-                        email: clerkUser.emailAddresses[0].emailAddress,
-                        name: clerkUser.firstName || '',
-                      });
-                      const res = await getUser();
-                      setUser(res);
+                        await register({
+                            clerkId: clerkUser.id,
+                            email: clerkUser.emailAddresses[0].emailAddress,
+                            name: clerkUser.firstName || '',
+                        });
+                        const res = await getUser();
+                        setUser(res);
                     } else {
-                      setUser(null);
+                        setUser(null);
                     }
-                  }
+                } finally {
+                    setIsLoading(false);
+                }
             } else {
                 setUser(null);
                 setToken(null);
@@ -79,6 +84,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         token,
         clerkUser,
         logout,
+        isLoading,
     };
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

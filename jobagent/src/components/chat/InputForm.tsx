@@ -9,9 +9,10 @@ interface InputFormProps {
     handleSubmit: (e: React.FormEvent) => void;
     disabled?: boolean;
     className?: string;
+    isAuthenticated?: boolean;
 }
 
-const InputForm = ({ inputValue, setInputValue, handleSubmit, disabled, className }: InputFormProps) => {
+const InputForm = ({ inputValue, setInputValue, handleSubmit, disabled, className, isAuthenticated }: InputFormProps) => {
     return (
         <div className={cn("border border-border rounded-lg p-4 mb-4", className)}>
             <form onSubmit={handleSubmit} className="flex items-center gap-2">
@@ -25,7 +26,8 @@ const InputForm = ({ inputValue, setInputValue, handleSubmit, disabled, classNam
                             handleSubmit(e as unknown as React.FormEvent);
                         }
                     }}
-                    placeholder="Write a message..."
+                    disabled={!isAuthenticated}
+                    placeholder={isAuthenticated ? 'Write a message...' : 'Please login to continue'}
                     className="rounded-full"
                 />
                 <Button

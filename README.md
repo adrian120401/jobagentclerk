@@ -2,6 +2,8 @@
 
 Job Agent is a modern, AI-driven platform designed to help users find, analyze, and prepare for tech job opportunities. It leverages advanced language models to provide personalized job recommendations, resume advice, job analysis, and interview simulations—all through a conversational interface.
 
+Demo link: [jobagentclerk.vercel.app](jobagentclerk.vercel.app)
+
 ---
 
 ## Application Highlights
@@ -17,6 +19,16 @@ Job Agent is a modern, AI-driven platform designed to help users find, analyze, 
 ### Interview Mode
 ![Interview Mode](./short3.gif)
 **Simulated technical interviews with real-time feedback and scoring.** The agent conducts mock interviews, provides instant feedback, assigns a performance score, and saves sessions so users can track their progress and improvement over time.
+
+---
+
+## Clerk Authentication Integration
+
+This application uses Clerk to provide secure and modern authentication for users. Clerk enables both email/password and Google-based sign-in and sign-up flows, streamlining user onboarding and access management. By leveraging Clerk's authentication platform, the app benefits from robust user management, improved security, and a seamless login experience.
+
+On the frontend, Clerk's React SDK is integrated to handle authentication flows, user sessions, and UI components such as sign-in and user profile management. The authentication state is synchronized with the application's backend: after a user signs in with Clerk, a Clerk-issued JWT is sent with each API request.
+
+On the backend, the Java SDK and the Nimbus JOSE + JWT library are used to validate Clerk's JWTs. This ensures that only authenticated users can access protected endpoints. The backend extracts the Clerk user ID from the validated token and uses it to manage and synchronize user records in the application's database, providing a secure and scalable approach to user data management.
 
 ---
 

@@ -6,6 +6,8 @@ import { getMessage } from './api/chat';
 import { useJob } from './context/JobContext';
 import { useError } from './context/ErrorContext';
 import ErrorDialog from './components/menu/ErrorDialog';
+import LoadingScreen from './components/LoadingScreen';
+import { useUser } from './context/UserContext';
 
 function App() {
     const [isLoadingMessage, setIsLoadingMessage] = useState(false);
@@ -17,6 +19,7 @@ function App() {
         },
     ]);
     const { jobSelected } = useJob();
+    const { isLoading } = useUser();
     const { setError } = useError();
 
     const handleSendMessage = async (message: string) => {
@@ -61,6 +64,7 @@ function App() {
                 isLoadingMessage={isLoadingMessage}
             />
             <ErrorDialog />
+            {isLoading && <LoadingScreen />}
         </div>
     );
 }

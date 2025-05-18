@@ -24,7 +24,7 @@ interface ChatInterfaceProps {
 
 const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterfaceProps) => {
     const [inputValue, setInputValue] = useState('');
-    const { user } = useUser();
+    const { user, isAuthenticated } = useUser();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -119,6 +119,8 @@ const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterf
                     inputValue={inputValue}
                     setInputValue={setInputValue}
                     handleSubmit={handleSubmit}
+                    disabled={isLoadingMessage || !isAuthenticated}
+                    isAuthenticated={isAuthenticated}
                 />
             </div>
         </div>
