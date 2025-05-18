@@ -4,7 +4,7 @@ Job Agent is a modern, AI-driven platform designed to help users find, analyze, 
 
 Demo: https://jobagentclerk.vercel.app
 Repo: https://github.com/adrian120401/jobagentclerk
-Author: adrian120401
+Author: @adrian120401 - LinkedIn: https://www.linkedin.com/in/adriandelosreyess
 
 ---
 
@@ -53,6 +53,9 @@ On the backend, the Java SDK and the Nimbus JOSE + JWT library are used to valid
 
 **Database:**
 - MongoDB
+
+**Auth:**
+- Clerk
 
 
 ---
