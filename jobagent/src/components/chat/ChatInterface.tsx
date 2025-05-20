@@ -26,7 +26,7 @@ interface ChatInterfaceProps {
 const recommendations = [
     'Whats jobs do you have for me?',
     'How can I improve my resume?',
-    'Improve my resume for me',
+    'Edit my resume for me improving my skills',
 ];
 
 const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterfaceProps) => {
@@ -127,8 +127,9 @@ const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterf
                         ))}
                         <div ref={messagesEndRef} />
                         {isLoadingMessage && (
-                            <div className="flex justify-center items-center py-4">
+                            <div className="flex justify-center items-center py-4 gap-2">
                                 <BotMessageSquare className="w-6 h-6 animate-pulse text-muted-foreground" />
+                                <p className="text-muted-foreground">Thinking... Maybe a lot 😑</p>
                             </div>
                         )}
                     </div>
