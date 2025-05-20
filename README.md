@@ -3,7 +3,9 @@
 Job Agent is a modern, AI-driven platform designed to help users find, analyze, and prepare for tech job opportunities. It leverages advanced language models to provide personalized job recommendations, resume advice, job analysis, and interview simulations—all through a conversational interface.
 
 Demo: https://jobagentclerk.vercel.app
+
 Repo: https://github.com/adrian120401/jobagentclerk
+
 Author: @adrian120401 - LinkedIn: https://www.linkedin.com/in/adriandelosreyess
 
 ---
