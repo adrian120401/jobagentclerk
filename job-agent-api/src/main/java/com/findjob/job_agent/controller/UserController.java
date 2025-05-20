@@ -37,15 +37,6 @@ public class UserController {
         return userService.getMe();
     }
 
-    @PostMapping("/cv")
-    public ResponseEntity<Map<String, String>> uploadCv(@RequestParam("file") MultipartFile file) throws IOException {
-        String url = userService.uploadCv(file);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("url", url);
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/docx")
     public ResponseEntity<Map<String, String>> uploadDocx(@RequestParam("file") MultipartFile file) throws IOException {
         String url = userService.uploadDocx(file);

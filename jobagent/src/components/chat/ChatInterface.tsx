@@ -8,6 +8,7 @@ import { BotMessageSquare } from 'lucide-react';
 import { Navbar } from '../navbar/Navbar';
 import { useUser } from '@/context/UserContext';
 import DocumentCard from '@/components/DocumentCard';
+import { Button } from '@/components/ui/button';
 export type MessageContent = string | IJob[];
 
 export interface Message {
@@ -25,6 +26,7 @@ interface ChatInterfaceProps {
 const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterfaceProps) => {
     const [inputValue, setInputValue] = useState('');
     const { user, isAuthenticated } = useUser();
+    const [openUserMenu, setOpenUserMenu] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +71,14 @@ const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterf
 
     return (
         <div className="flex flex-col h-full">
-            <Navbar />
+            <Navbar openUserMenu={openUserMenu} setOpenUserMenu={setOpenUserMenu} />
+
+            {isAuthenticated && !user?.docx_path && (
+                <div className="fixed bottom-0 left-0 right-0 bg-black/70 p-4 text-center h-screen z-40 flex flex-col items-center justify-center gap-4">
+                    <p className="text-white">You need to upload your CV to continue</p>
+                    <Button onClick={() => setOpenUserMenu(true)}>Upload CV</Button>
+                </div>
+            )}
 
             <div className="flex flex-col justify-between flex-1 w-full max-w-4xl mx-auto overflow-y-auto">
                 <ScrollArea className="flex-1 overflow-y-auto">

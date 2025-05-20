@@ -21,7 +21,6 @@ public class User implements UserDetails {
     private String id;
     private String name;
     private String email;
-    private String cv_path;
     private String docx_path;
     private ResumeProfile resumeProfile;
     private String role;

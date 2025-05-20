@@ -13,13 +13,16 @@ import UserDropdown from './UserDropdown';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import UserMenu from '../menu/UserMenu';
 
-export const Navbar = () => {
+interface NavbarProps {
+    openUserMenu: boolean;
+    setOpenUserMenu: (open: boolean) => void;
+}
+export const Navbar = ({ openUserMenu, setOpenUserMenu }: NavbarProps) => {
     const [isInterviewMenuOpen, setIsInterviewMenuOpen] = useState(false);
     const [interviewResume, setInterviewResume] = useState<IInterviewResume | null>(null);
     const [interviewResumeOpen, setInterviewResumeOpen] = useState(false);
     const [isInterviewHistoryOpen, setIsInterviewHistoryOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { isAuthenticated, user, logout, clerkUser } = useUser();
     const { jobSelected, setJobSelected } = useJob();
 
@@ -29,7 +32,7 @@ export const Navbar = () => {
     };
 
     return (
-        <header className="border-b border-border py-3 px-4 flex items-center justify-between h-14 bg-card">
+        <header className="border-b border-border py-3 px-4 flex items-center justify-between h-14 bg-card z-50">
             <div className="text-lg font-medium">JobAgent</div>
 
             {jobSelected && (
@@ -81,7 +84,7 @@ export const Navbar = () => {
                             {isMenuOpen && (
                                 <UserDropdown
                                     setIsMenuOpen={setIsMenuOpen}
-                                    setIsUserMenuOpen={setIsUserMenuOpen}
+                                    setIsUserMenuOpen={setOpenUserMenu}
                                     setIsInterviewHistoryOpen={setIsInterviewHistoryOpen}
                                     logout={logout}
                                 />
@@ -96,7 +99,7 @@ export const Navbar = () => {
                     )}
                 </div>
             </div>
-            <UserMenu isOpen={isUserMenuOpen} setIsOpen={setIsUserMenuOpen} />
+            <UserMenu isOpen={openUserMenu} setIsOpen={setOpenUserMenu} />
             <InterviewMenu
                 isOpen={isInterviewMenuOpen}
                 onClose={() => setIsInterviewMenuOpen(false)}

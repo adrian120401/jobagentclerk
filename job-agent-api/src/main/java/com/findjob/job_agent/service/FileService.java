@@ -33,14 +33,11 @@ public class FileService {
     }
 
     public ResumeProfile readCV(byte[] file) {
-        try (PDDocument document = Loader.loadPDF(file)) {
-            PDFTextStripper textStripper = new PDFTextStripper();
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(file);
+             XWPFDocument document = new XWPFDocument(bis)) {
+            String cvText = collectText(document);
 
-            String rawText = textStripper.getText(document);
-            document.close();
-
-            String sanitizedText = sanitizeText(rawText);
-
+            String sanitizedText = sanitizeText(cvText);
             String response = cvAnalyzeService.analyzeCV(sanitizedText);
 
             if (response == null) {
@@ -48,7 +45,6 @@ public class FileService {
             }
 
             return ResumeProfile.parseResumeResponse(response);
-
         } catch (Exception e) {
             throw new RuntimeException("Error processing PDF");
         }
@@ -117,7 +113,6 @@ public class FileService {
             document.write(outputStream);
             return outputStream.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Error modifying DOCX", e);
         }
     }

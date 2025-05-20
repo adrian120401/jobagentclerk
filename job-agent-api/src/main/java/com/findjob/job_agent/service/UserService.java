@@ -57,20 +57,12 @@ public class UserService {
         return repository.findAll().getFirst();
     }
 
-    public String uploadCv(MultipartFile cv) throws IOException {
-        User user = getAuthUser();
-        String cvPath = uploadFile(cv.getBytes(), cv.getOriginalFilename());
-        ResumeProfile resumeProfile = fileService.readCV(cv.getBytes());
-        user.setCv_path(cvPath);
-        user.setResumeProfile(resumeProfile);
-        repository.save(user);
-        return cvPath;
-    }
-
     public String uploadDocx(MultipartFile docx) throws IOException {
         User user = getAuthUser();
         String docxPath = uploadFile(docx.getBytes(), docx.getOriginalFilename());
+        ResumeProfile resumeProfile = fileService.readCV(docx.getBytes());
         user.setDocx_path(docxPath);
+        user.setResumeProfile(resumeProfile);
         repository.save(user);
         return docxPath;
     }

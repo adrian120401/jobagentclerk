@@ -7,7 +7,6 @@ import {
     DialogDescription,
 } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
-import PdfUpload from '../PdfUpload';
 import DocxUpload from '../DocxUpload';
 interface UserMenuProps {
     isOpen: boolean;
@@ -33,10 +32,7 @@ const UserMenu = ({ isOpen, setIsOpen }: UserMenuProps) => {
                         </DialogDescription>
                     </DialogHeader>
                     <CardContent className="p-6 pt-0">
-                        <div className="space-y-8">
-                            <PdfUpload user={user} setUser={setUser} />
-                            <DocxUpload user={user} setUser={setUser} />
-                        </div>
+                        <DocxUpload user={user} setUser={setUser} />
                     </CardContent>
                 </Card>
             </DialogContent>
