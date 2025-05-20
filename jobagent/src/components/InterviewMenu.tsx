@@ -27,7 +27,7 @@ const InterviewMenu = ({ isOpen, onClose, jobId, interviewResume }: InterviewMen
     const [messages, setMessages] = useState<IInterview[]>(initialMessages);
     const [isLoading, setIsLoading] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const { user } = useUser();
+    const { user, isAuthenticated } = useUser();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const closeInterview = () => {
@@ -129,7 +129,8 @@ const InterviewMenu = ({ isOpen, onClose, jobId, interviewResume }: InterviewMen
                         setInputValue={setInputValue}
                         handleSubmit={handleSubmit}
                         className="mb-0"
-                        disabled={isLoading}
+                        disabled={isLoading || !isAuthenticated}
+                        isAuthenticated={isAuthenticated}
                     />
                 </div>
             </SheetContent>

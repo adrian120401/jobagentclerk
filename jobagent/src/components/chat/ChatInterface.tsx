@@ -23,6 +23,12 @@ interface ChatInterfaceProps {
     isLoadingMessage: boolean;
 }
 
+const recommendations = [
+    'Whats jobs do you have for me?',
+    'How can I improve my resume?',
+    'Improve my resume for me',
+];
+
 const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterfaceProps) => {
     const [inputValue, setInputValue] = useState('');
     const { user, isAuthenticated } = useUser();
@@ -34,7 +40,11 @@ const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterf
         e.preventDefault();
         if (!inputValue.trim()) return;
 
-        onSendMessage(inputValue);
+        sendMessage(inputValue);
+    };
+
+    const sendMessage = (message: string) => {
+        onSendMessage(message);
         setInputValue('');
     };
 
@@ -123,6 +133,22 @@ const ChatInterface = ({ messages, onSendMessage, isLoadingMessage }: ChatInterf
                         )}
                     </div>
                 </ScrollArea>
+                {messages.length <= 1 && (
+                    <div className="flex flex-col items-center justify-center p-4">
+                        <div className="flex flex-wrap gap-2">
+                            {recommendations.map((recommendation) => (
+                                <Button
+                                    key={recommendation}
+                                    variant="outline"
+                                    size="lg"
+                                    onClick={() => sendMessage(recommendation)}
+                                >
+                                    {recommendation}
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 <InputForm
                     inputValue={inputValue}
